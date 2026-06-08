@@ -18,8 +18,10 @@ http:
       type: response
       require-body: true
       binary-mode: true
+      max-size: 20971520
       timeout: 30
-      argument: '{"lyricLang":"off","captionLang":"off","blockUpload":true,"blockImmersive":true,"blockShorts":false,"debug":false}'
+      debug: true
+      argument: '{"lyricLang":"off","captionLang":"off","blockUpload":true,"blockImmersive":true,"blockShorts":false,"debug":true}'
   mock:
     - match: '^https?:\/\/[\w-]+\.googlevideo\.com\/initplayback.+&oad'
       text: ''
@@ -27,5 +29,5 @@ http:
 
 script-providers:
   youtube.enhance.response:
-    url: https://raw.githubusercontent.com/Maasea/sgmodule/master/Script/Youtube/youtube.response.js
+    url: https://raw.githubusercontent.com/Maasea/sgmodule/master/Script/Youtube/youtube.response.js?v=20260609-2fd14b4
     interval: 86400
