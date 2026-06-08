@@ -1,0 +1,31 @@
+name: Youtube (Music) Enhance
+desc: 适用于 Youtube & Youtube Music
+
+script:
+  shortcuts:
+    youtube-enhance-quic: network == 'udp' and (host == 'youtubei.googleapis.com' or host == 'googlevideo.com' or host.endswith('.googlevideo.com'))
+
+rules:
+  - SCRIPT,youtube-enhance-quic,REJECT,no-track
+
+http:
+  mitm:
+    - '*.googlevideo.com'
+    - youtubei.googleapis.com
+  script:
+    - match: '^https:\/\/youtubei\.googleapis\.com\/(youtubei\/v1\/(browse|next|player|search|reel\/reel_watch_sequence|guide|account\/get_setting|get_watch))(\?(.*))?$'
+      name: youtube.enhance.response
+      type: response
+      require-body: true
+      binary-mode: true
+      timeout: 30
+      argument: '{"lyricLang":"off","captionLang":"off","blockUpload":true,"blockImmersive":true,"blockShorts":false,"debug":false}'
+  mock:
+    - match: '^https?:\/\/[\w-]+\.googlevideo\.com\/initplayback.+&oad'
+      text: ''
+      status-code: 200
+
+script-providers:
+  youtube.enhance.response:
+    url: https://raw.githubusercontent.com/Maasea/sgmodule/master/Script/Youtube/youtube.response.js
+    interval: 86400
